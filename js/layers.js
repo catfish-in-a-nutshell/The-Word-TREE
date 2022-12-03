@@ -329,7 +329,7 @@ addLayer("p", {
 
         37: {
             title: () => wrap("either"),
-            description: () => `Alternately buff ${wrap("expert")} & ${wrap("peter")}s efficiency.`,
+            description: () => `${wrap("Alternately")} buff ${wrap("expert")} & ${wrap("peter")}s efficiency.`,
             unlocked: () => hasUpgrade("p", 32) && hasUpgrade("p", 33),
             cost: () => layers.p.improve_upg_costs[player.p.improve_upgs_bought],
             onPurchase() { player.p.improve_upgs_bought += 1 },
@@ -1094,7 +1094,7 @@ addLayer("p", {
                         if (hasUpgrade("p", 32))
                             text += `writing ${res_styled_text(formatWhole(tmp.p.jsscriptGain), layers.p.js_color)} JS scripts per second.<br>`
                         else
-                            text += `You have hired ${wrap('peter')}, typing ${res_styled_text(format(tmp.p.treeGain), layers.p.tree_color)} ${wrap("trees")} per second.<br>`
+                            text += `typing ${res_styled_text(format(tmp.p.treeGain), layers.p.tree_color)} ${wrap("trees")} per second.<br>`
 
                         if (hasUpgrade("p", 32))
                             text += `You have ${res_styled_text(formatWhole(player.p.jsscripts), layers.p.js_color)} JS scripts, auto ${wrap("enter")}ing ${res_styled_text(formatWhole(tmp.p.treeGain), layers.p.tree_color)} ${wrap("trees")} per second.<br>`
