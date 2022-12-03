@@ -122,7 +122,7 @@ addLayer("p", {
     startData() { return {
         unlocked: true,
 		points: new Decimal(0),
-        text_input: "INPUT HERE",
+        text_input: "ENTER TEXT HERE ",
         total_texts: [],
         typed_trees: d(0),
         peters: d(1),
@@ -182,7 +182,7 @@ addLayer("p", {
                 if (tmp.p.upgrades[11].unlocked) cnt += 2
                 if (tmp.p.upgrades[12].unlocked) cnt += 1
                 if (hasUpgrade("p", 13)) cnt += 6
-                if (hasUpgrade("p", 14)) cnt += 4
+                if (hasUpgrade("p", 14)) cnt += 5
                 if (hasUpgrade("p", 15)) cnt += 13
                 if (hasUpgrade("p", 21)) cnt += 1
                 if (hasUpgrade("p", 22)) cnt += 5
@@ -1644,6 +1644,7 @@ addLayer("s", {
             done() { return player.s.secret2_unlocked },
             onComplete() { player.s.points = player.s.points.add(1) },
             style: secretStyle("140px", "50px"),
+            tooltip: () => "Find the " + wrap("easteregg"),
             is_left_stroke: true,
             offset: [-20, 50]
         },
@@ -1653,6 +1654,7 @@ addLayer("s", {
             done() { return player.s.secret3_unlocked },
             onComplete() { player.s.points = player.s.points.add(1) },
             style: secretStyle("-120px", "260px"),
+            tooltip: () => "Find the order in distance chaos",
             is_left_stroke: false,
             offset: [30, -75]
         },
@@ -1662,6 +1664,7 @@ addLayer("s", {
             done() { return player.s.secret4_unlocked },
             onComplete() { player.s.points = player.s.points.add(1) },
             style: secretStyle("220px", "260px"),
+            tooltip: () => "Everything falls into place",
             is_left_stroke: true,
             offset: [-30, -75]
         }
