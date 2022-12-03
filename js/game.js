@@ -321,7 +321,9 @@ function autobuyUpgrades(layer){
 function gameLoop(diff) {
 	if (isEndgame() || tmp.gameEnded){
 		tmp.gameEnded = true
-		clearParticles()
+
+		if (!player.keepGoing)
+			clearParticles()
 	}
 
 	if (isNaN(diff) || diff < 0) diff = 0
@@ -379,6 +381,10 @@ function gameLoop(diff) {
 	for (layer in layers){
 		if (layers[layer].milestones) updateMilestones(layer);
 		if (layers[layer].achievements) updateAchievements(layer)
+	}
+
+	if (player.tab == "s") {
+		drawSecretCanvas()
 	}
 
 }

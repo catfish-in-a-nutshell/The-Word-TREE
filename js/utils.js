@@ -261,7 +261,7 @@ function updateMilestones(layer) {
 		if (!(hasMilestone(layer, id)) && layers[layer].milestones[id].done()) {
 			player[layer].milestones.push(id)
 			if (layers[layer].milestones[id].onComplete) layers[layer].milestones[id].onComplete()
-			if (tmp[layer].milestonePopups || tmp[layer].milestonePopups === undefined) doPopup("milestone", tmp[layer].milestones[id].requirementDescription, "Milestone Gotten!", 3, tmp[layer].color);
+			if (tmp[layer].milestonePopups || tmp[layer].milestonePopups === undefined) doPopup("milestone", tmp[layer].milestones[id].requirementDescription, "Milestone Gotten!", 3, tmp[layer].color, tmp[layer].textcolor);
 			player[layer].lastMilestone = id
 		}
 	}
@@ -273,7 +273,7 @@ function updateAchievements(layer) {
 		if (isPlainObject(layers[layer].achievements[id]) && !(hasAchievement(layer, id)) && layers[layer].achievements[id].done()) {
 			player[layer].achievements.push(id)
 			if (layers[layer].achievements[id].onComplete) layers[layer].achievements[id].onComplete()
-			if (tmp[layer].achievementPopups || tmp[layer].achievementPopups === undefined) doPopup("achievement", tmp[layer].achievements[id].name, "Achievement Gotten!", 3, tmp[layer].color);
+			if (tmp[layer].achievementPopups || tmp[layer].achievementPopups === undefined) doPopup("achievement", tmp[layer].achievements[id].name, "Achievement Gotten!", 3, tmp[layer].color, tmp[layer].textcolor);
 		}
 	}
 }
@@ -343,7 +343,8 @@ function isPlainObject(obj) {
 document.title = modInfo.name
 
 // Converts a string value to whatever it's supposed to be
-function toValue(value, oldValue) {
+function toValue(value, oldValue, isText) {
+	if (isText) return value
 	if (oldValue instanceof Decimal) {
 		value = new Decimal (value)
 		if (checkDecimalNaN(value)) return decimalZero
@@ -359,7 +360,7 @@ var activePopups = [];
 var popupID = 0;
 
 // Function to show popups
-function doPopup(type = "none", text = "This is a test popup.", title = "", timer = 3, color = "") {
+function doPopup(type = "none", text = "This is a test popup.", title = "", timer = 3, color = "", textcolor = "") {
 	switch (type) {
 		case "achievement":
 			popupTitle = "Achievement Unlocked!";
@@ -378,7 +379,11 @@ function doPopup(type = "none", text = "This is a test popup.", title = "", time
 	popupMessage = text;
 	popupTimer = timer;
 
-	activePopups.push({ "time": popupTimer, "type": popupType, "title": popupTitle, "message": (popupMessage + "\n"), "id": popupID, "color": color })
+	let style = {}
+	if (color) style["background-color"] = color;
+	if (textcolor) style["color"] = textcolor;
+
+	activePopups.push({ "time": popupTimer, "type": popupType, "title": popupTitle, "message": (popupMessage + "\n"), "id": popupID, "style": style})
 	popupID++;
 }
 

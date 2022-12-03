@@ -1,0 +1,126 @@
+.c1 {
+    color: red;
+}
+
+.c2 {
+    color: orange;
+}
+
+.c3 {
+    color: yellow;
+}
+
+.c4 {
+    color: green;
+}
+
+#secret-canvas {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+@keyframes secretFloat {
+	0% {
+		transform: translate(0, 0);
+	}
+	50% {
+		transform: translate(0, -15px);
+	}
+	100% {
+		transform: translate(0, 0);
+	}
+}
+
+#input-p-text_input {
+    width: 500px;
+    padding: 7px;
+    margin: 20px;
+    color: #dfdfdf;
+    border: 5px #95a5a6 solid;
+    border-radius: 15px;
+    background-color: transparent;
+}
+
+
+
+
+.arrow {
+    width:35px;
+    height:60px;
+    display: grid;
+    overflow: hidden;
+    filter: drop-shadow(5px 5px 7px #ffffff77);
+}
+.arrow:before,
+.arrow:after {
+    content: "";
+    grid-area: 1/1;
+    background: #95a5a6;
+    clip-path: polygon(8px 0, 8px calc(100% - 15px),0 calc(100% - 15px),50% 100%,100% calc(100% - 15px), calc(100% - 8px) calc(100% - 15px),calc(100% - 8px) 0);
+    transform: translateY(calc(0% + var(--s,0%)));
+}
+
+.moving:before, .moving:after {
+    animation: arrow 1s infinite;
+}
+
+.arrow:after {
+    --s:-100%;
+}
+
+@keyframes arrow {
+    80%,100%{transform: translateY(calc(100% + var(--s,0%)))}
+}
+
+.arrow-wrapper {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#ether-main {
+    width: 600px;
+    height: 150px;
+    font-size: 30px;
+    text-shadow: 0px 0px 10px #000;
+}
+
+.ethering {
+    background: radial-gradient(rgb(162, 155, 254), transparent 70%)
+}
+
+.eatering {
+    background: radial-gradient(#eb4d4b, transparent 70%)
+}
+
+#ether-text {
+    line-height: 150px;
+}
+
+.etherBuyable {
+    background: radial-gradient(rgb(162, 155, 254), transparent 70%);
+}
+
+.eaterBuyable {
+    background: radial-gradient(rgb(235, 77, 75), transparent 70%);
+}
+
+.etherCan:hover {
+    background: radial-gradient(#e84393, transparent 70%);
+}
+
+.eaterCan:hover {
+    background: radial-gradient(#e84118, transparent 70%);
+}
+
+.etherBuyable.locked {
+    background: radial-gradient(#636e72, transparent 70%);
+}
+
+.eaterBuyable.locked {
+    background: radial-gradient(rgb(162, 155, 254), transparent 70%);
+}
+
+.presentcode {
+    color: #0f0f0f;
+}

@@ -5,7 +5,9 @@ function loadVue() {
 	Vue.component('display-text', {
 		props: ['layer', 'data'],
 		template: `
-			<span class="instant" v-html="data"></span>
+			<div  v-bind:style="Array.isArray(data) ? data[1] : {}">
+				<span class="instant"  v-html="Array.isArray(data) ? data[0] : data"></span>
+			</div>
 		`
 	})
 
@@ -13,7 +15,7 @@ function loadVue() {
 	Vue.component('raw-html', {
 			props: ['layer', 'data'],
 			template: `
-				<span class="instant"  v-html="data"></span>
+				<span class="instant" v-html="data"></span>
 			`
 		})
 
@@ -179,7 +181,7 @@ function loadVue() {
 				<span v-if= "tmp[layer].upgrades[data].title"><h3 v-html="tmp[layer].upgrades[data].title"></h3><br></span>
 				<span v-html="tmp[layer].upgrades[data].description"></span>
 				<span v-if="layers[layer].upgrades[data].effectDisplay"><br>Currently: <span v-html="run(layers[layer].upgrades[data].effectDisplay, layers[layer].upgrades[data])"></span></span>
-				<br><br>Cost: {{ formatWhole(tmp[layer].upgrades[data].cost) }} {{(tmp[layer].upgrades[data].currencyDisplayName ? tmp[layer].upgrades[data].currencyDisplayName : tmp[layer].resource)}}
+				<br><br>Cost: {{ formatWhole(tmp[layer].upgrades[data].cost) }} <span v-html="(tmp[layer].upgrades[data].currencyDisplayName ? tmp[layer].upgrades[data].currencyDisplayName : tmp[layer].resource)"> </span>
 			</span>
 			<tooltip v-if="tmp[layer].upgrades[data].tooltip" :text="tmp[layer].upgrades[data].tooltip"></tooltip>
 
@@ -236,7 +238,7 @@ function loadVue() {
 	Vue.component('main-display', {
 		props: ['layer', 'data'],
 		template: `
-		<div><span v-if="player[layer].points.lt('1e1000')">You have </span><h2 v-bind:style="{'color': tmp[layer].color, 'text-shadow': '0px 0px 10px ' + tmp[layer].color}">{{data ? format(player[layer].points, data) : formatWhole(player[layer].points)}}</h2> {{tmp[layer].resource}}<span v-if="layers[layer].effectDescription">, <span v-html="run(layers[layer].effectDescription, layers[layer])"></span></span><br><br></div>
+		<div><span v-if="player[layer].points.lt('1e1000')">You have </span><h2 v-bind:style="{'color': tmp[layer].color, 'text-shadow': '0px 0px 10px ' + tmp[layer].color}">{{data ? format(player[layer].points, data) : formatWhole(player[layer].points)}}</h2>  <span v-html='tmp[layer].resource'></span><span v-if="layers[layer].effectDescription">, <span v-html="run(layers[layer].effectDescription, layers[layer])"></span></span><br><br></div>
 		`
 	})
 
@@ -245,8 +247,8 @@ function loadVue() {
 		props: ['layer'],
 		template: `
 		<div style="margin-top: -13px">
-			<span v-if="tmp[layer].baseAmount"><br>You have {{formatWhole(tmp[layer].baseAmount)}} {{tmp[layer].baseResource}}</span>
-			<span v-if="tmp[layer].passiveGeneration"><br>You are gaining {{format(tmp[layer].resetGain.times(tmp[layer].passiveGeneration))}} {{tmp[layer].resource}} per second</span>
+			<span v-if="tmp[layer].baseAmount"><br>You have {{formatWhole(tmp[layer].baseAmount)}} <span v-html='tmp[layer].baseResource'></span></span>
+			<span v-if="tmp[layer].passiveGeneration"><br>You are gaining {{format(tmp[layer].resetGain.times(tmp[layer].passiveGeneration))}} <span v-html="tmp[layer].resource"></span> per second</span>
 			<br><br>
 			<span v-if="tmp[layer].showBest">Your best {{tmp[layer].resource}} is {{formatWhole(player[layer].best)}}<br></span>
 			<span v-if="tmp[layer].showTotal">You have made a total of {{formatWhole(player[layer].total)}} {{tmp[layer].resource}}<br></span>
@@ -273,8 +275,8 @@ function loadVue() {
 		props: ['layer', 'data'],
 		template: `
 		<div v-if="tmp[layer].buyables && tmp[layer].buyables[data]!== undefined && tmp[layer].buyables[data].unlocked" style="display: grid">
-			<button v-bind:class="{ buyable: true, tooltipBox: true, can: tmp[layer].buyables[data].canBuy, locked: !tmp[layer].buyables[data].canBuy, bought: player[layer].buyables[data].gte(tmp[layer].buyables[data].purchaseLimit)}"
-			v-bind:style="[tmp[layer].buyables[data].canBuy ? {'background-color': tmp[layer].color} : {}, tmp[layer].componentStyles.buyable, tmp[layer].buyables[data].style]"
+			<button v-bind:class="{ buyable: true, etherBuyable: tmp[layer].buyables[data].useCanClass == 1, eaterBuyable: tmp[layer].buyables[data].useCanClass == 2, tooltipBox: true, can: tmp[layer].buyables[data].canBuy && !tmp[layer].buyables[data].useCanClass, etherCan: tmp[layer].buyables[data].canBuy && tmp[layer].buyables[data].useCanClass==1, eaterCan: tmp[layer].buyables[data].canBuy && tmp[layer].buyables[data].useCanClass==2, locked: !tmp[layer].buyables[data].canBuy, bought: player[layer].buyables[data].gte(tmp[layer].buyables[data].purchaseLimit)}"
+			v-bind:style="[false ? {'background-color': tmp[layer].color} : {}, tmp[layer].componentStyles.buyable, tmp[layer].buyables[data].style]"
 			v-on:click="if(!interval) buyBuyable(layer, data)" :id='"buyable-" + layer + "-" + data' @mousedown="start" @mouseleave="stop" @mouseup="stop" @touchstart="start" @touchend="stop" @touchcancel="stop">
 				<span v-if= "tmp[layer].buyables[data].title"><h2 v-html="tmp[layer].buyables[data].title"></h2><br></span>
 				<span v-bind:style="{'white-space': 'pre-line'}" v-html="run(layers[layer].buyables[data].display, layers[layer].buyables[data])"></span>
@@ -484,7 +486,7 @@ function loadVue() {
 		props: ['layer', 'data'],
 		template: `
 		<div v-if="tmp[layer].achievements && tmp[layer].achievements[data]!== undefined && tmp[layer].achievements[data].unlocked" v-bind:class="{ [layer]: true, achievement: true, tooltipBox:true, locked: !hasAchievement(layer, data), bought: hasAchievement(layer, data)}"
-			v-bind:style="achievementStyle(layer, data)">
+			v-bind:style="achievementStyle(layer, data)" v-bind:id="'achievement_' + layer + data">
 			<tooltip :text="
 			(tmp[layer].achievements[data].tooltip == '') ? false : hasAchievement(layer, data) ? (tmp[layer].achievements[data].doneTooltip ? tmp[layer].achievements[data].doneTooltip : (tmp[layer].achievements[data].tooltip ? tmp[layer].achievements[data].tooltip : 'You did it!'))
 			: (tmp[layer].achievements[data].goalTooltip ? tmp[layer].achievements[data].goalTooltip : (tmp[layer].achievements[data].tooltip ? tmp[layer].achievements[data].tooltip : 'LOCKED'))
@@ -554,12 +556,15 @@ function loadVue() {
 	})
 
 
-	// Updates the value in player[layer][data]
+	// Updates the value in player[layer][data[0]]
+	// data[1]: the unlocked variable
+	// data[2]: boolean, true if this should not be interpreted as a number
 	Vue.component('text-input', {
 		props: ['layer', 'data'],
 		template: `
-			<input class="instant" :id="'input-' + layer + '-' + data" :value="player[layer][data].toString()" v-on:focus="focused(true)" v-on:blur="focused(false)"
-			v-on:change="player[layer][data] = toValue(document.getElementById('input-' + layer + '-' + data).value, player[layer][data])">
+			<input type='text' v-if="tmp[layer][data[1]]" class="instant" :id="'input-' + layer + '-' + data[0]" :value="player[layer][data[0]].toString()" v-on:focus="focused(true)" v-on:blur="focused(false)"
+			v-on:change="player[layer][data[0]] = toValue(document.getElementById('input-' + layer + '-' + data[0]).value, player[layer][data[0]], data[2])" 
+			v-on:keyup.enter="layers[layer].submitText()" maxlength="10">
 		`
 	})
 
@@ -596,6 +601,27 @@ function loadVue() {
 				v-bind:class="{ longUpg: true, can: player[layer].unlocked, locked: !player[layer].unlocked }">{{tmp[layer].buyables.sellAllText ? tmp[layer].buyables.sellAllText : "Sell All"}}</button>
 	`
 	})
+
+	Vue.component('arrow', {
+		props: ['layer', 'data'],
+		template: `
+			<div v-if="tmp[layer].clickables[data[1]].unlocked" class="arrow-wrapper">
+				<div v-bind:class="{ arrow: true, moving: tmp[layer][data[0]] }">
+
+				</div>
+			</div>
+		`
+	})
+
+	Vue.component('ether-main', {
+		props: ['layer', 'data'],
+		template: `
+			<div id="ether-main" v-bind:class="{ethering: !tmp.p.eaterUnlocked, eatering: tmp.p.eaterUnlocked}">
+				<span class="instant" id="ether-text" v-html="data"></span>
+			</div>
+		`
+	})
+
 
 	// SYSTEM COMPONENTS
 	Vue.component('node-mark', systemComponents['node-mark'])

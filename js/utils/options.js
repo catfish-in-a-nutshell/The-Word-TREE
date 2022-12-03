@@ -2,6 +2,13 @@
 
 let options = {}
 
+function tellSecret() {
+	console.log("Along seven black bars, an invisible secret is hidden.")
+	console.log("The answer, a seven-letter-word, needs to be displayed elsewhere.")
+	// TODO: tell
+	options.secretTold = true
+}
+
 function getStartOptions() {
 	return {
 		autosave: true,
@@ -14,6 +21,7 @@ function getStartOptions() {
 		forceOneTab: false,
 		oldStyle: false,
 		tooltipForcing: true,
+		secretTold: false
 	}
 }
 
