@@ -1654,7 +1654,7 @@ addLayer("s", {
             done() { return player.s.secret3_unlocked },
             onComplete() { player.s.points = player.s.points.add(1) },
             style: secretStyle("-120px", "260px"),
-            tooltip: () => "Find the order in distance chaos",
+            tooltip: () => `Find the order of ${wrap("tree")} in the chaos of ${wrap("meter")}`,
             is_left_stroke: false,
             offset: [30, -75]
         },
@@ -1664,7 +1664,7 @@ addLayer("s", {
             done() { return player.s.secret4_unlocked },
             onComplete() { player.s.points = player.s.points.add(1) },
             style: secretStyle("220px", "260px"),
-            tooltip: () => "Everything falls into place",
+            tooltip: () => "Follow the suspicious option button",
             is_left_stroke: true,
             offset: [-30, -75]
         }
