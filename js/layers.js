@@ -1558,8 +1558,8 @@ addLayer("p", {
                 if (player.p.eternities.lte("1e-11111")) {
                     player.p.eternities = d("1e-11111")
                 }
-                if (player.p.eternities.gte("1e11111")) {
-                    player.p.eternities = d("1e11111")
+                if (player.p.eternities.gte("1e1111")) {
+                    player.p.eternities = d("1e1111")
                 }
             }
 
