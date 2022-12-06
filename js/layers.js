@@ -1650,7 +1650,7 @@ addLayer("s", {
         },
         
         13: {
-            name: () => hasAchievement("s", 13) ? "mETER - 4 OF 5 SQUARES" : "LOCKED - CLICK 4 OF 5 SQUARES",
+            name: () => hasAchievement("s", 13) ? "mETER - 4 OF 5 RECTS" : "LOCKED - CLICK 4 OF 5 RECTS",
             done() { return player.s.secret3_unlocked },
             onComplete() { player.s.points = player.s.points.add(1) },
             style: secretStyle("-120px", "260px"),
